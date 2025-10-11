@@ -15,6 +15,14 @@ public final class MathUtils {
         return sigmoidOutput * (1 - sigmoidOutput);
     }
 
+    public static double relu(double x) {
+        return Math.max(0, x);
+    }
+
+    public static double reluDerivative(double reluOutput) {
+        return reluOutput > 0 ? 1 : 0;
+    }
+
     public static double[] matrixVectorMultiply(double[][] matrix, double[] vector) {
         int rows = matrix.length;
 
@@ -67,6 +75,17 @@ public final class MathUtils {
         return result;
     }
 
+    public static double[] elementMultVectors(double[] a, double[] b) {
+        if (a.length != b.length) {
+            throw new IllegalArgumentException("Vectors must have the same length.");
+        }
+        double[] result = new double[a.length];
+        for (int i = 0; i < a.length; i++) {
+            result[i] = a[i] * b[i];
+        }
+        return result;
+    }
+
 
     public static double[][] transposeMatrix(double[][] matrix) {
         if (matrix == null || matrix.length == 0) {
@@ -105,4 +124,5 @@ public final class MathUtils {
         }
         return result;
     }
+
 }
