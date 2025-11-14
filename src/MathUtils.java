@@ -23,6 +23,30 @@ public final class MathUtils {
         return reluOutput > 0 ? 1 : 0;
     }
 
+    public static double[] softmax(double[] logits) {
+        double[] probabilities = new double[logits.length];
+
+        double maxLogit = Double.NEGATIVE_INFINITY;
+        for (double logit : logits) {
+            if (logit > maxLogit) {
+                maxLogit = logit;
+            }
+        }
+
+        double sumExponentials = 0.0;
+        for (int i = 0; i < logits.length; i++) {
+            probabilities[i] = Math.exp(logits[i] - maxLogit);
+            sumExponentials += probabilities[i];
+        }
+
+        for (int i = 0; i < probabilities.length; i++) {
+            probabilities[i] /= sumExponentials;
+        }
+
+        return probabilities;
+    }
+
+
     public static double[] matrixVectorMultiply(double[][] matrix, double[] vector) {
         int rows = matrix.length;
 

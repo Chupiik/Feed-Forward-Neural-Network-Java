@@ -28,35 +28,31 @@ public class NeuralNetwork {
 
         double[] currentActivations = input;
 
-        for (Layer layer : this.layers) {
+        for (int i = 0; i < this.layers.size(); i++) {
+            Layer layer = this.layers.get(i);
+
             double[] weightedSum = MathUtils.matrixVectorMultiply(layer.weights, currentActivations);
             double[] biasedSum = MathUtils.addVectors(weightedSum, layer.biases);
 
-            double[] newActivations = new double[biasedSum.length];
-            for (int i = 0; i < newActivations.length; i++) {
-                if (layer == this.layers.getLast()) {
-                    newActivations[i] = MathUtils.sigmoid(biasedSum[i]);
-                } else {
-                    newActivations[i] = MathUtils.relu(biasedSum[i]);
+            if (i == this.layers.size() - 1) {
+                currentActivations = MathUtils.softmax(biasedSum);
+            } else {
+                double[] newActivations = new double[biasedSum.length];
+                for (int j = 0; j < newActivations.length; j++) {
+                    newActivations[j] = MathUtils.relu(biasedSum[j]);
                 }
+                currentActivations = newActivations;
             }
 
-            currentActivations = newActivations;
             allActivations.add(currentActivations);
         }
 
         return allActivations;
     }
 
-
     public double train(double[] input, double[] expectedOutput) {
         List<double[]> allActivations = feedForward(input);
-
-        LinkedList<double[]> deltas = new LinkedList<>();
-
-        int lastLayerIndex = layers.size() - 1;
-        double[] finalOutput = allActivations.get(lastLayerIndex + 1);
-        double[] error = MathUtils.subtractVectors(expectedOutput, finalOutput);
+        double[] finalOutput = allActivations.get(allActivations.size() - 1);
 
         double sampleError = 0.0;
         for (int i = 0; i < expectedOutput.length; i++) {
@@ -64,17 +60,12 @@ public class NeuralNetwork {
             sampleError += diff * diff;
         }
 
+        LinkedList<double[]> deltas = new LinkedList<>();
 
+        double[] outputDelta = MathUtils.subtractVectors(finalOutput, expectedOutput);
+        deltas.addFirst(outputDelta);
 
-        double[] outputDerivatives = new double[finalOutput.length];
-        for (int i = 0; i < finalOutput.length; i++) {
-            outputDerivatives[i] = MathUtils.sigmoidDerivative(finalOutput[i]);
-        }
-
-        double[] currentDelta = MathUtils.elementMultVectors(error, outputDerivatives);
-        deltas.addFirst(currentDelta);
-
-        for (int i = lastLayerIndex - 1; i >= 0; i--) {
+        for (int i = layers.size() - 2; i >= 0; i--) {
             Layer frontLayer = layers.get(i + 1);
             double[][] transposedWeights = MathUtils.transposeMatrix(frontLayer.weights);
             double[] propagatedError = MathUtils.matrixVectorMultiply(transposedWeights, deltas.getFirst());
@@ -85,7 +76,7 @@ public class NeuralNetwork {
                 hiddenDerivatives[j] = MathUtils.reluDerivative(currentActivations[j]);
             }
 
-            currentDelta = MathUtils.elementMultVectors(propagatedError, hiddenDerivatives);
+            double[] currentDelta = MathUtils.elementMultVectors(propagatedError, hiddenDerivatives);
             deltas.addFirst(currentDelta);
         }
 
@@ -95,13 +86,13 @@ public class NeuralNetwork {
             double[] currentLayerDelta = deltas.get(i);
 
             for (int j = 0; j < layer.biases.length; j++) {
-                layer.biases[j] += learningRate * currentLayerDelta[j];
+                layer.biases[j] -= learningRate * currentLayerDelta[j];
             }
 
 
             for (int j = 0; j < layer.weights.length; j++) {
                 for (int k = 0; k < layer.weights[j].length; k++) {
-                    layer.weights[j][k] += learningRate * currentLayerDelta[j] * previousActivations[k];
+                    layer.weights[j][k] -= learningRate * currentLayerDelta[j] * previousActivations[k];
                 }
             }
         }
