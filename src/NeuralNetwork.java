@@ -3,16 +3,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
-
 public class NeuralNetwork {
 
     private final List<Layer> layers;
     private final double learningRate;
+    private final double momentum;
 
-
-    public NeuralNetwork(double learningRate, Random random, int... sizes) {
+    public NeuralNetwork(double learningRate, double momentum, Random random, int... sizes) {
         this.layers = new ArrayList<>();
         this.learningRate = learningRate;
+        this.momentum = momentum;
 
         for (int i = 0; i < sizes.length - 1; i++) {
             int inputSize = sizes[i];
@@ -21,19 +21,14 @@ public class NeuralNetwork {
         }
     }
 
-
     public List<double[]> feedForward(double[] input) {
         List<double[]> allActivations = new ArrayList<>();
         allActivations.add(input);
-
         double[] currentActivations = input;
-
         for (int i = 0; i < this.layers.size(); i++) {
             Layer layer = this.layers.get(i);
-
             double[] weightedSum = MathUtils.matrixVectorMultiply(layer.weights, currentActivations);
             double[] biasedSum = MathUtils.addVectors(weightedSum, layer.biases);
-
             if (i == this.layers.size() - 1) {
                 currentActivations = MathUtils.softmax(biasedSum);
             } else {
@@ -43,10 +38,8 @@ public class NeuralNetwork {
                 }
                 currentActivations = newActivations;
             }
-
             allActivations.add(currentActivations);
         }
-
         return allActivations;
     }
 
@@ -61,21 +54,17 @@ public class NeuralNetwork {
         }
 
         LinkedList<double[]> deltas = new LinkedList<>();
-
         double[] outputDelta = MathUtils.subtractVectors(finalOutput, expectedOutput);
         deltas.addFirst(outputDelta);
-
         for (int i = layers.size() - 2; i >= 0; i--) {
             Layer frontLayer = layers.get(i + 1);
             double[][] transposedWeights = MathUtils.transposeMatrix(frontLayer.weights);
             double[] propagatedError = MathUtils.matrixVectorMultiply(transposedWeights, deltas.getFirst());
-
             double[] currentActivations = allActivations.get(i + 1);
             double[] hiddenDerivatives = new double[currentActivations.length];
             for (int j = 0; j < currentActivations.length; j++) {
                 hiddenDerivatives[j] = MathUtils.reluDerivative(currentActivations[j]);
             }
-
             double[] currentDelta = MathUtils.elementMultVectors(propagatedError, hiddenDerivatives);
             deltas.addFirst(currentDelta);
         }
@@ -86,18 +75,19 @@ public class NeuralNetwork {
             double[] currentLayerDelta = deltas.get(i);
 
             for (int j = 0; j < layer.biases.length; j++) {
-                layer.biases[j] -= learningRate * currentLayerDelta[j];
+                double velocity = (layer.biasVelocities[j] * momentum) - (learningRate * currentLayerDelta[j]);
+                layer.biases[j] += velocity;
+                layer.biasVelocities[j] = velocity;
             }
-
 
             for (int j = 0; j < layer.weights.length; j++) {
                 for (int k = 0; k < layer.weights[j].length; k++) {
-                    layer.weights[j][k] -= learningRate * currentLayerDelta[j] * previousActivations[k];
+                    double velocity = (layer.weightVelocities[j][k] * momentum) - (learningRate * currentLayerDelta[j] * previousActivations[k]);
+                    layer.weights[j][k] += velocity;
+                    layer.weightVelocities[j][k] = velocity;
                 }
             }
         }
-
         return sampleError;
     }
-
 }

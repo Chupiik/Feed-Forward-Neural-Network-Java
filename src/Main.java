@@ -1,14 +1,15 @@
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class Main {
 
-     static void main() {
+    public static void main(String[] args) {
 
         System.out.println("Setting up...");
         Random random = new Random(42);
 
-        NeuralNetwork network = new NeuralNetwork(0.01, random, 784, 128, 64, 10);
+        NeuralNetwork network = new NeuralNetwork(0.03, 0.5, random, 784, 128, 64, 10);
 
         String trainVectorsPath = "data/fashion_mnist_train_vectors.csv";
         String trainLabelsPath = "data/fashion_mnist_train_labels.csv";
@@ -21,12 +22,11 @@ public class Main {
         for (int epoch = 0; epoch < epochs; epoch++) {
             double totalEpochError = 0;
 
+            Collections.shuffle(trainingData, random);
 
             for (int i = 0; i < trainingData.size(); i++) {
                 MnistImage image = trainingData.get(i);
-
                 double[] expectedOutput = createOneHotVector(image.label(), 10);
-
                 totalEpochError += network.train(image.pixels(), expectedOutput);
 
                 if ((i + 1) % 10000 == 0) {
@@ -36,8 +36,6 @@ public class Main {
             System.out.printf("Epoch %d complete. Average Error: %.6f\n", epoch + 1, totalEpochError / trainingData.size());
         }
         System.out.println("Training finished.");
-
-
     }
 
     public static double[] createOneHotVector(int label, int numClasses) {

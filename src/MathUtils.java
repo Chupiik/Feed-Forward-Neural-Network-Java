@@ -131,11 +131,14 @@ public final class MathUtils {
         return result;
     }
 
-    public static double[][] createRandomMatrix(int rows, int cols, Random random) {
+    public static double[][] createRandomMatrix(int rows, int cols, Random random, int inputSize) {
         double[][] result = new double[rows][cols];
+
+        double stddev = Math.sqrt(2.0 / inputSize);
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                result[i][j] = random.nextDouble() - 0.5;
+                result[i][j] = random.nextGaussian() * stddev;
             }
         }
         return result;
