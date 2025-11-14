@@ -13,7 +13,6 @@ public class DataReader {
         try (BufferedReader brVectors = new BufferedReader(new FileReader(vectorsPath));
              BufferedReader brLabels = new BufferedReader(new FileReader(labelsPath))) {
 
-            brVectors.readLine();
 
             String vectorLine;
             String labelLine;

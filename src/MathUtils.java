@@ -23,6 +23,14 @@ public final class MathUtils {
         return reluOutput > 0 ? 1 : 0;
     }
 
+    public static double leakyRelu(double x) {
+        return x > 0 ? x : 0.01 * x;
+    }
+
+    public static double leakyReluDerivative(double leakyReluOutput) {
+        return leakyReluOutput > 0 ? 1 : 0.01;
+    }
+
     public static double[] softmax(double[] logits) {
         double[] probabilities = new double[logits.length];
 
@@ -131,11 +139,22 @@ public final class MathUtils {
         return result;
     }
 
+//    public static double[][] createRandomMatrix(int rows, int cols, Random random, int inputSize) {
+//        double[][] result = new double[rows][cols];
+//
+//        double stddev = Math.sqrt(2.0 / inputSize);
+//
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < cols; j++) {
+//                result[i][j] = random.nextGaussian() * stddev;
+//            }
+//        }
+//        return result;
+//    }
+
     public static double[][] createRandomMatrix(int rows, int cols, Random random, int inputSize) {
         double[][] result = new double[rows][cols];
-
         double stddev = Math.sqrt(2.0 / inputSize);
-
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 result[i][j] = random.nextGaussian() * stddev;
@@ -147,7 +166,8 @@ public final class MathUtils {
     public static double[] createRandomVector(int size, Random random) {
         double[] result = new double[size];
         for (int i = 0; i < size; i++) {
-            result[i] = random.nextDouble() - 0.5;
+            //result[i] = random.nextDouble() - 0.5;
+            result[i] = 0.1;
         }
         return result;
     }
