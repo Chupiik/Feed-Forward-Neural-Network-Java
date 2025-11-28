@@ -1,8 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -31,7 +29,7 @@ public class Main {
         System.out.println(" - Validation set size: " + validationData.size());
 
 
-        int epochs = 30;
+        int epochs = 15;
         double bestValidationAccuracy = 0.0;
         int epochsWithoutImprovement = 0;
         final int patience = 2;
@@ -76,29 +74,44 @@ public class Main {
 
         System.out.println("\n--- Final Evaluation Phase ---");
 
-        evaluateAndPredict(network, allTrainingData);
+        System.out.println("\nGenerating example_train_predictions.csv...");
+        savePredictions(network, allTrainingData, "project/example_train_predictions.csv");
 
         String testVectorsPath = "data/fashion_mnist_test_vectors.csv";
         String testLabelsPath = "data/fashion_mnist_test_labels.csv";
-        System.out.println("\nLoading test data from " + testVectorsPath);
+        System.out.println("Loading test data...");
         List<MnistImage> testData = DataReader.loadData(testVectorsPath, testLabelsPath);
 
-        evaluateAndPredict(network, testData);
+        System.out.println("Generating example_test_predictions.csv...");
+        savePredictions(network, testData, "project/example_test_predictions.csv");
+
+        evaluateAndPrint(network, testData);
 
     }
 
-    private static void evaluateAndPredict(NeuralNetwork network, List<MnistImage> data) {
+
+    private static void savePredictions(NeuralNetwork network, List<MnistImage> data, String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (MnistImage image : data) {
+                int prediction = network.predict(image.pixels());
+                writer.write(Integer.toString(prediction));
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + filename);
+            e.printStackTrace();
+        }
+    }
+
+    private static void evaluateAndPrint(NeuralNetwork network, List<MnistImage> data) {
         int correctPredictions = 0;
-        List<Integer> predictions = new ArrayList<>();
         for (MnistImage image : data) {
-            int prediction = network.predict(image.pixels());
-            predictions.add(prediction);
-            if (prediction == image.label()) {
+            if (network.predict(image.pixels()) == image.label()) {
                 correctPredictions++;
             }
         }
         double accuracy = (double) correctPredictions / data.size() * 100.0;
-        System.out.printf("Accuracy: %.2f%% (%d / %d correct)\n", accuracy, correctPredictions, data.size());
+        System.out.printf("Final Test Accuracy: %.2f%%\n", accuracy);
     }
 
 
