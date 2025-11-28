@@ -11,9 +11,9 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("Setting up...");
-        Random random = new Random(42);
+        Random random = new Random(0);
 
-        NeuralNetwork network = new NeuralNetwork(0.01, 0.7, random, 784, 128, 64, 10);
+        NeuralNetwork network = new NeuralNetwork(0.0001,0.6,0, random, 784, 128, 64, 10);
 
         String trainVectorsPath = "data/fashion_mnist_train_vectors.csv";
         String trainLabelsPath = "data/fashion_mnist_train_labels.csv";
@@ -31,10 +31,10 @@ public class Main {
         System.out.println(" - Validation set size: " + validationData.size());
 
 
-        int epochs = 100;
+        int epochs = 30;
         double bestValidationAccuracy = 0.0;
         int epochsWithoutImprovement = 0;
-        final int patience = 5;
+        final int patience = 2;
 
         System.out.println("\nStarting training for up to " + epochs + " epochs...");
 
@@ -45,7 +45,7 @@ public class Main {
             for (int i = 0; i < trainingData.size(); i++) {
                 MnistImage image = trainingData.get(i);
                 double[] expectedOutput = createOneHotVector(image.label(), 10);
-                network.train(image.pixels(), expectedOutput);
+                network.trainADAM(image.pixels(), expectedOutput);
             }
 
             int correctValidation = 0;

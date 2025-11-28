@@ -30,10 +30,10 @@ public class DataReader {
             }
 
         } catch (IOException e) {
-            System.err.println("Error reading data files: " + vectorsPath + " or " + labelsPath);
+            System.err.println("Error reading data files");
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            System.err.println("Error parsing a number from the data files. Please check the file format.");
+            System.err.println("Error parsing a number from the data files");
             e.printStackTrace();
         }
 
@@ -45,7 +45,7 @@ public class DataReader {
         String trainVectorsPath = "data/fashion_mnist_train_vectors.csv";
         String trainLabelsPath = "data/fashion_mnist_train_labels.csv";
 
-        System.out.println("Attempting to load data from:");
+        System.out.println("Attempting to load data:");
         System.out.println("Vectors: " + trainVectorsPath);
         System.out.println("Labels:  " + trainLabelsPath);
 
@@ -61,7 +61,7 @@ public class DataReader {
             System.out.println(" - First 10 pixels (normalized): " +
                     Arrays.toString(Arrays.copyOfRange(firstImage.pixels(), 0, 10)));
         } else {
-            System.out.println("\nFailed to load any images. Please check the file paths and format.");
+            System.out.println("\nFailed to load any images");
         }
     }
 }
