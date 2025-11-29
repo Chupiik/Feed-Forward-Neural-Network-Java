@@ -1,3 +1,5 @@
+// 582919 Patrik Chupáč
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -74,16 +76,16 @@ public class Main {
 
         System.out.println("\n--- Final Evaluation Phase ---");
 
-        System.out.println("\nGenerating example_train_predictions.csv...");
-        savePredictions(network, allTrainingData, "project/example_train_predictions.csv");
+        System.out.println("\nGenerating train_predictions.csv...");
+        savePredictions(network, allTrainingData, "train_predictions.csv");
 
         String testVectorsPath = "data/fashion_mnist_test_vectors.csv";
         String testLabelsPath = "data/fashion_mnist_test_labels.csv";
         System.out.println("Loading test data...");
         List<MnistImage> testData = DataReader.loadData(testVectorsPath, testLabelsPath);
 
-        System.out.println("Generating example_test_predictions.csv...");
-        savePredictions(network, testData, "project/example_test_predictions.csv");
+        System.out.println("Generating test_predictions.csv...");
+        savePredictions(network, testData, "test_predictions.csv");
 
         evaluateAndPrint(network, testData);
 
