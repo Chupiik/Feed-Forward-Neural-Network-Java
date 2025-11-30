@@ -9,6 +9,7 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
 
         System.out.println("Setting up...");
         Random random = new Random(0);
@@ -88,6 +89,10 @@ public class Main {
         savePredictions(network, testData, "test_predictions.csv");
 
         evaluateAndPrint(network, testData);
+
+        long endTime = System.currentTimeMillis();
+        double totalTimeSeconds = (endTime - startTime) / 1000.0;
+        System.out.println("\nTotal execution time: " + totalTimeSeconds + " seconds.");
 
     }
 

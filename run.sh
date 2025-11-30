@@ -1,5 +1,9 @@
 #!/bin/bash
 
+. /etc/profile.d/modules.sh
+
+module add jdk
+
 mkdir -p bin
 javac -d bin src/*.java
 
