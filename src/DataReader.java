@@ -6,7 +6,22 @@ import java.util.List;
 import java.util.Arrays;
 
 
+/**
+ * Utility class responsible for loading and parsing the Fashion-MNIST dataset
+ * from CSV files.
+ */
 public class DataReader {
+
+    /**
+     * Loads image data and labels from the specified CSV files.
+     * <p>
+     * It reads both files simultaneously line-by-line. Pixel values are parsed
+     * from the vector file and normalized from the range [0, 255] to [0.0, 1.0].
+     *
+     * @param vectorsPath The file path to the CSV containing the image pixel vectors.
+     * @param labelsPath  The file path to the CSV containing the corresponding labels.
+     * @return A list of MnistImage objects containing the normalized pixels and labels.
+     */
     public static List<MnistImage> loadData(String vectorsPath, String labelsPath) {
         List<MnistImage> images = new ArrayList<>();
 
@@ -41,6 +56,12 @@ public class DataReader {
     }
 
 
+    /**
+     * A simple test method to verify that data loading works correctly.
+     * Prints statistics and details about the first loaded image to the console.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         String trainVectorsPath = "data/fashion_mnist_train_vectors.csv";
         String trainLabelsPath = "data/fashion_mnist_train_labels.csv";

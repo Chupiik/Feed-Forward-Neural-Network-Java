@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9080e54a-9197-492b-98df-dfb5d6a2e885" name="Changes" comment="Some final changes - project requirements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Layer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Layer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MathUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MnistImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MnistImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NeuralNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NeuralNetwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NeuralNetworkXOR.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/XorForwardPassTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/XorForwardPassTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,23 +54,24 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/xchupac/pv021_project&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHELLCHECK.PATH": "I do mind",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/xchupac/pv021_project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" side_tool="true" />
@@ -83,7 +90,7 @@
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.32994187" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" weight="0.2863372" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.38517442" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32994187" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.32994187" />
       <window_info anchor="right" id="Endpoints" />
@@ -126,7 +133,7 @@
       <workItem from="1763215120618" duration="40065000" />
       <workItem from="1764416580079" duration="776000" />
       <workItem from="1764417907570" duration="6865000" />
-      <workItem from="1764525196504" duration="599000" />
+      <workItem from="1764525196504" duration="5068000" />
     </task>
     <task id="LOCAL-00001" summary="ADAM optimizer added and final model configuration">
       <option name="closed" value="true" />
@@ -152,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764416733287</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Some final changes - project requirements">
+      <option name="closed" value="true" />
+      <created>1764525865257</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764525865257</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -6,8 +6,29 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The main entry point for the Neural Network application.
+ * <p>
+ * This class handles the setup of the network, loading of data,
+ * execution of the training loop (using the Adam optimizer),
+ * and generation of the final prediction files for submission.
+ */
 public class Main {
 
+    /**
+     * The main method that orchestrates the training and evaluation process.
+     * <p>
+     * It performs the following steps:
+     * 1. Initializes the neural network and random number generator.
+     * 2. Loads the Fashion-MNIST training data.
+     * 3. Splits data into training and validation sets.
+     * 4. Runs the training loop for a specified number of epochs, checking validation accuracy.
+     * 5. Implements early stopping if validation accuracy does not improve.
+     * 6. Generates prediction files ('train_predictions.csv' and 'test_predictions.csv').
+     * 7. Prints the final execution time.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
 
@@ -97,6 +118,16 @@ public class Main {
     }
 
 
+    /**
+     * Generates predictions for a given dataset and writes them to a CSV file.
+     * <p>
+     * The output format corresponds to the assignment requirements:
+     * one integer (class label) per line.
+     *
+     * @param network  The trained neural network.
+     * @param data     The list of images to predict.
+     * @param filename The name of the output file (e.g., "train_predictions.csv").
+     */
     private static void savePredictions(NeuralNetwork network, List<MnistImage> data, String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (MnistImage image : data) {
@@ -110,6 +141,12 @@ public class Main {
         }
     }
 
+    /**
+     * Evaluates the network on a given dataset and prints the accuracy to the console.
+     *
+     * @param network The trained neural network.
+     * @param data    The dataset to evaluate against.
+     */
     private static void evaluateAndPrint(NeuralNetwork network, List<MnistImage> data) {
         int correctPredictions = 0;
         for (MnistImage image : data) {
@@ -122,63 +159,18 @@ public class Main {
     }
 
 
+    /**
+     * Creates a One-Hot encoded vector for a given class label.
+     * <p>
+     * For example, if label is 2 and numClasses is 10, returns [0, 0, 1, 0, ...].
+     *
+     * @param label      The integer class label (0-9).
+     * @param numClasses The total number of classes (10 for Fashion-MNIST).
+     * @return A double array where the index corresponding to the label is 1.0, others 0.0.
+     */
     public static double[] createOneHotVector(int label, int numClasses) {
         double[] oneHot = new double[numClasses];
         oneHot[label] = 1.0;
         return oneHot;
     }
 }
-
-
-//import java.util.Arrays;
-//import java.util.List;
-//import java.util.Random;
-//
-//public class Main {
-//
-//    public static void main(String[] args) {
-//
-//        Random random = new Random(42);
-//
-//
-//        NeuralNetworkXOR network = new NeuralNetworkXOR(0.1, 0.5, random, 2, 4, 1);
-//
-//        double[][] inputs = {
-//                {0, 0},
-//                {0, 1},
-//                {1, 0},
-//                {1, 1}
-//        };
-//        double[][] expectedOutputs = {
-//                {0},
-//                {1},
-//                {1},
-//                {0}
-//        };
-//
-//        int epochs = 5000;
-//        System.out.println("Starting training for " + epochs + " epochs...");
-//
-//        for (int epoch = 0; epoch < epochs; epoch++) {
-//            double totalEpochError = 0;
-//            for (int i = 0; i < inputs.length; i++) {
-//                totalEpochError += network.train(inputs[i], expectedOutputs[i]);
-//            }
-//
-//            if ((epoch + 1) % 500 == 0) {
-//                System.out.printf("Epoch %d complete. Average Error: %.8f\n", epoch + 1, totalEpochError / inputs.length);
-//            }
-//        }
-//        System.out.println("Training finished.");
-//
-//        System.out.println("\n--- Final Predictions for XOR ---");
-//        for (int i = 0; i < inputs.length; i++) {
-//            List<double[]> activations = network.feedForward(inputs[i]);
-//            double prediction = activations.get(activations.size() - 1)[0];
-//            System.out.printf("Input: %s, Expected: %s, Prediction: %.4f\n",
-//                    Arrays.toString(inputs[i]),
-//                    Arrays.toString(expectedOutputs[i]),
-//                    prediction);
-//        }
-//    }
-//}

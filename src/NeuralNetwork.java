@@ -3,6 +3,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents a fully connected Feed-Forward Neural Network.
+ * <p>
+ * This class manages the network topology (layers), performs forward propagation,
+ * and implements training algorithms including standard SGD with Momentum and the
+ * Adam optimizer. It handles backpropagation and weight updates manually.
+ */
 public class NeuralNetwork {
 
     private final List<Layer> layers;
@@ -22,6 +29,16 @@ public class NeuralNetwork {
     private double beta2_t = 1.0;
 
 
+    /**
+     * Constructs a new Neural Network with the specified hyperparameters and topology.
+     *
+     * @param learningRate The step size for weight updates (alpha).
+     * @param momentum     The momentum factor for SGD (gamma).
+     * @param lambda       The L2 regularization strength (weight decay).
+     * @param random       The random number generator for weight initialization.
+     * @param sizes        A variable argument list defining the number of neurons in each layer
+     *                     (e.g., 784, 128, 10 means input 784, one hidden layer of 128, output 10).
+     */
     public NeuralNetwork(double learningRate, double momentum, double lambda, Random random, int... sizes) {
         this.layers = new ArrayList<>();
         this.learningRate = learningRate;
@@ -37,6 +54,15 @@ public class NeuralNetwork {
         }
     }
 
+    /**
+     * Performs the forward pass through the network.
+     * <p>
+     * Computes the activations for every layer.
+     * Uses Leaky ReLU for hidden layers and Softmax for the output layer.
+     *
+     * @param input The input vector.
+     * @return A list of activation vectors for every layer (including the input layer).
+     */
     public List<double[]> feedForward(double[] input) {
         List<double[]> allActivations = new ArrayList<>();
         allActivations.add(input);
@@ -61,6 +87,16 @@ public class NeuralNetwork {
         return allActivations;
     }
 
+    /**
+     * Trains the network on a single sample using SGD with Momentum.
+     * <p>
+     * Performs a forward pass, calculates gradients via backpropagation,
+     * and updates weights and biases using the standard momentum update rule.
+     *
+     * @param input          The input vector.
+     * @param expectedOutput The target (ground truth) vector.
+     * @return The mean squared error (MSE) for this sample.
+     */
     public double train(double[] input, double[] expectedOutput) {
         List<double[]> allActivations = feedForward(input);
         double[] finalOutput = allActivations.get(allActivations.size() - 1);
@@ -116,6 +152,17 @@ public class NeuralNetwork {
     }
 
 
+    /**
+     * Trains the network on a single sample using the Adam optimizer.
+     * <p>
+     * Implements Adaptive Moment Estimation (Adam). It maintains moving averages
+     * of the gradients (m) and squared gradients (v), applies bias correction,
+     * and updates parameters accordingly.
+     *
+     * @param input          The input vector.
+     * @param expectedOutput The target (ground truth) vector.
+     * @return The mean squared error (MSE) for this sample.
+     */
     public double trainADAM(double[] input, double[] expectedOutput) {
         List<double[]> allActivations = feedForward(input);
         double[] finalOutput = allActivations.get(allActivations.size() - 1);
@@ -185,6 +232,14 @@ public class NeuralNetwork {
 
 
 
+    /**
+     * Predicts the class label for a given input.
+     * <p>
+     * Runs the forward pass and finds the index of the neuron with the highest activation.
+     *
+     * @param input The input vector.
+     * @return The predicted class label (index of the maximum output).
+     */
     public int predict(double[] input) {
         List<double[]> allActivations = feedForward(input);
         double[] finalOutput = allActivations.get(allActivations.size() - 1);
